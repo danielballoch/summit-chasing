@@ -1,6 +1,46 @@
 import Head from 'next/head'
+import fetch from 'isomorphic-unfetch'
+import useSWR from 'swr'
 
-const Home = () => (
+
+
+
+// const API_URL = 'http://localhost:3000/api'
+// async function fetcher(path) {
+//   const res = await fetch(API_URL + path)
+//   const json = await res.json()
+//   console.log(json)
+//   return json
+// }
+
+Home.getInitialProps = async function(){
+    // const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
+    const API_URL = 'https://api.printful.com/countries'
+    const res = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": process.env.customKey
+        }
+        })
+  const data = await res.json();
+
+  console.log(`Show data fetched. Count: ${data.result.length}`);
+
+  return {
+    countries: data.result.map(entry => entry.name)
+  };
+}
+
+
+function Home(props) {
+    // const { data, error } = useSWR('/getProducts', fetcher)
+
+    // if (error){console.log(error); return <div>failed to load</div>}
+    // if (!data) return <div>loading...</div>
+    console.log(props)
+
+    return (
   <div className="container">
     <Head>
       <title>Create Next App</title>
@@ -9,41 +49,27 @@ const Home = () => (
 
     <main>
       <h1 className="title">
-        Welcome to <a href="https://nextjs.org">Next.js!</a>
+      <a href="https://nextjs.org">Summit</a>Chasing
       </h1>
 
       <p className="description">
-        Get started by editing <code>pages/index.js</code>
+        Clothing and prints for philosophers, business people or anyone striving for success.
       </p>
 
       <div className="grid">
         <a href="https://nextjs.org/docs" className="card">
-          <h3>Documentation &rarr;</h3>
-          <p>Find in-depth information about Next.js features and API.</p>
+          <h3>Atlas Dreamer</h3>
+          <img src='/Atlas_Mock_Front.jpg' alt='atlas tshirt' />
+          <p>Our first design! Blending greek mythology and wise words from an old irish poet.</p>
         </a>
 
         <a href="https://nextjs.org/learn" className="card">
-          <h3>Learn &rarr;</h3>
-          <p>Learn about Next.js in an interactive course with quizzes!</p>
+          <h3>Shop All &rarr;</h3>
         </a>
 
-        <a
-          href="https://github.com/zeit/next.js/tree/master/examples"
-          className="card"
-        >
-          <h3>Examples &rarr;</h3>
-          <p>Discover and deploy boilerplate example Next.js projects.</p>
-        </a>
-
-        <a
-          href="https://zeit.co/new?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          className="card"
-        >
-          <h3>Deploy &rarr;</h3>
-          <p>
-            Instantly deploy your Next.js site to a public URL with ZEIT Now.
-          </p>
-        </a>
+      </div>
+      <div>
+          <p>{props.countries}</p>
       </div>
     </main>
 
@@ -146,11 +172,16 @@ const Home = () => (
         margin-top: 3rem;
       }
 
+      .grid img {
+          height: 70vh;
+          max-width: 90vw;
+      }
+
       .card {
         margin: 1rem;
         flex-basis: 45%;
         padding: 1.5rem;
-        text-align: left;
+        text-align: center;
         color: inherit;
         text-decoration: none;
         border: 1px solid #eaeaea;
@@ -198,6 +229,7 @@ const Home = () => (
       }
     `}</style>
   </div>
-)
+    )
+}
 
 export default Home
