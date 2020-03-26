@@ -1,11 +1,10 @@
 import Head from 'next/head'
 import fetch from 'isomorphic-unfetch'
-import { useRouter } from 'next/router'
 
 import Link from 'next/link';
 
 export async function getStaticProps(){
-    const API_URL = 'https://api.printful.com/store/products'
+    const API_URL = 'https://api.printful.com/store/products/160667537'
     const res = await fetch(API_URL, {
         method: "GET",
         headers: {
@@ -14,11 +13,9 @@ export async function getStaticProps(){
         }
         })
   const data = await res.json();
-
-  console.log(`Show data fetched. Count: ${data.result.length}`);
   return {
     props: {
-        products: data.result.map(entry => entry)
+        products: data.result.sync_variants
     }
   };
 }
@@ -29,7 +26,6 @@ export async function getStaticProps(){
 
 function Home(props) {
     console.log(props)
-
     return (
   <div className="container">
     <Head>
@@ -38,33 +34,22 @@ function Home(props) {
     </Head>
 
     <main>
-      <h1 className="title">
-      <a href="#">Summit</a>Chasing
-      </h1>
-
-      <p className="description">
-        Clothing and prints for those striving for success
-      </p>
-
+      
+      
+      <div className="card">
       <div className="grid">
-      {props.products.map(product => (
-        <Link href={`/products/${product.id}`}  key={product.id}>
-            <div className="card">
-                <img src={product.thumbnail_url} alt={product.name} />
-                <h3>{product.name}</h3>
-            </div>
-        </Link>
-      ))}
+        <img src={props.products[0].files[1].preview_url} alt={props.products[0].name} />
+        <img src={props.products[0].files[0].preview_url} alt={props.products[0].name} />
+        <h2>
+      {props.products[0].retail_price} {props.products[0].currency} {props.products[0].name} 
+      </h2>
+      </div>
+      </div>
 
-        <a href="https://nextjs.org/learn" className="card">
-          <h3>Shop All &rarr;</h3>
+      <a href="https://nextjs.org/learn" className="card">
+          <h3>Add To Cart</h3>
         </a>
 
-      </div>
-
-      <div>
-          <p>{props.countries}</p>
-      </div>
     </main>
 
     <footer>
@@ -163,17 +148,19 @@ function Home(props) {
         flex-wrap: wrap;
         width: 100%;
         max-width: 1200px;
-        margin-top: 3rem;
+      }
+      .grid img {
+          width: 400px;
       }
 
-      .grid img {
+      .img {
           width: 100%;
       }
 
       .card {
         margin: 1rem;
         flex-basis: 45%;
-        max-width: 300px;
+        max-width: 1200px;
         padding: 1.5rem;
         text-align: center;
         color: inherit;
