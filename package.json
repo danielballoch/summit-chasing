@@ -9,6 +9,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@sanity/client": "^1.149.2",
+    "@sanity/image-url": "^0.140.17",
     "cors": "^2.8.5",
     "isomorphic-unfetch": "^3.0.0",
     "micro-cors": "^0.1.1",

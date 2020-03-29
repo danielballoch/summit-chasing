@@ -61,10 +61,6 @@ function Home(props) {
         </a>
 
       </div>
-
-      <div>
-          <p>{props.countries}</p>
-      </div>
     </main>
 
     <footer>
