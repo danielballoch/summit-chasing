@@ -21,7 +21,7 @@ export async function getStaticProps({ preview = false }) {
     return {
       props: { allProducts, preview },
     }
-  }
+}
 
 function sanity(props) {
     console.log(props)

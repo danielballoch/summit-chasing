@@ -2,26 +2,39 @@ import Head from 'next/head'
 import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
 
+import { getAllProductsForHome } from '../lib/api'
+import { imageBuilder } from '../lib/api'
+
 import Link from 'next/link';
 
-export async function getStaticProps(){
-    const API_URL = 'https://api.printful.com/store/products'
-    const res = await fetch(API_URL, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": process.env.customKey
-        }
-        })
-  const data = await res.json();
-
-  console.log(`Show data fetched. Count: ${data.result.length}`);
-  return {
-    props: {
-        products: data.result.map(entry => entry)
+//New Method getting products from Sanity CMS
+export async function getStaticProps({ preview = false }) {
+    const allProducts = await getAllProductsForHome(preview)
+    return {
+      props: { allProducts, preview },
     }
-  };
 }
+
+
+//Old Method - getting products from printful
+// export async function getStaticProps(){
+//     const API_URL = 'https://api.printful.com/store/products'
+//     const res = await fetch(API_URL, {
+//         method: "GET",
+//         headers: {
+//             "Content-Type": "application/json",
+//             "Authorization": process.env.customKey
+//         }
+//         })
+//   const data = await res.json();
+
+//   console.log(`Show data fetched. Count: ${data.result.length}`);
+//   return {
+//     props: {
+//         products: data.result.map(entry => entry)
+//     }
+//   };
+// }
 
 
 
@@ -47,13 +60,27 @@ function Home(props) {
       </p>
 
       <div className="grid">
-      {props.products.map(product => (
+      {/* {props.products.map(product => (
         <Link href={`/products/${product.id}`}  key={product.id}>
             <div className="card">
                 <img src={product.thumbnail_url} alt={product.name} />
                 <h3>{product.name}</h3>
             </div>
         </Link>
+      ))} */}
+
+      {props.allProducts.map(product => (
+            <Link href={`/products/${product.slug.current}`} key={product.id}>
+                <div  className="card">
+                <h3>{product.title}</h3>
+                    <img  
+                    src={imageBuilder 
+                    .image(product.defaultProductVariant.images[0].asset._ref)
+                    .width(200)
+                    .url()} 
+                    />
+                </div>
+            </Link>
       ))}
 
         <a href="https://nextjs.org/learn" className="card">
