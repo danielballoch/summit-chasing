@@ -1,8 +1,10 @@
 import Head from 'next/head'
 import fetch from 'node-fetch'
-
+import Link from 'next/link';
 import { getAllPostsWithSlug, getProductAndMoreProducts} from '../../lib/api'
 import { imageBuilder } from '../../lib/api'
+
+
 
 function Product(props){
     console.log(props)
@@ -23,25 +25,25 @@ function Product(props){
             <img  
                 src={imageBuilder 
                 .image(props.product.images[0].asset._ref)
-                .width(200)
+                .width(600)
                 .url()} 
             />
             <img  
                 src={imageBuilder 
                 .image(props.product.images[1].asset._ref)
-                .width(200)
+                .width(600)
                 .url()} 
             />
                
         </div>
         </div>
 
-        <div className="grid">
-            <a href="#" className="card">
-                <h3>Add To Cart</h3>
-            </a>
+        <Link href="/CheckoutPage" >
+        <div className="grid" className="card">
             
+                <h3>Add To Cart</h3>
         </div>
+        </Link>
         <main className="card">
         <h2>
                 What is the {props.product.title}?
@@ -108,11 +110,12 @@ function Product(props){
         max-width: 1200px;
       }
       .grid img {
-          width: 400px;
+          max-width: 575px;
       }
 
       .img {
           width: 100%;
+          height: 100%;
       }
 
       .card {

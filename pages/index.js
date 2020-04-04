@@ -71,12 +71,12 @@ function Home(props) {
 
       {props.allProducts.map(product => (
             <Link href={`/products/${product.slug.current}`} key={product.id}>
-                <div  className="card">
+                <div  className="card" key={product.id}>
                 <h3>{product.title}</h3>
                     <img  
                     src={imageBuilder 
                     .image(product.defaultProductVariant.images[0].asset._ref)
-                    .width(200)
+                    .width(400)
                     .url()} 
                     />
                 </div>
@@ -197,7 +197,7 @@ function Home(props) {
         margin: 1rem;
         flex-basis: 45%;
         max-width: 300px;
-        padding: 1.5rem;
+        padding: .1rem;
         text-align: center;
         color: inherit;
         text-decoration: none;
