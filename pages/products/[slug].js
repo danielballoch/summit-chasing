@@ -3,10 +3,13 @@ import fetch from 'node-fetch'
 import Link from 'next/link';
 import { getAllPostsWithSlug, getProductAndMoreProducts} from '../../lib/api'
 import { imageBuilder } from '../../lib/api'
+import { useContext } from 'react';
+import CartContext from '../../components/cartContext';
 
 
 
 function Product(props){
+    const { addToCart, total } = useContext(CartContext);
     console.log(props)
     if (props.product) {
     return (
@@ -38,12 +41,12 @@ function Product(props){
         </div>
         </div>
 
-        <Link href="/CheckoutPage" >
-        <div className="grid" className="card">
+
+        <div className="grid" className="card" onClick={() => {addToCart(props.product.slug); total(props.product.price); }}>
             
                 <h3>Add To Cart</h3>
         </div>
-        </Link>
+
         <main className="card">
         <h2>
                 What is the {props.product.title}?
@@ -51,9 +54,9 @@ function Product(props){
         </h2>
             <p className="body">{props.product.body}</p>
         </main>
-        <a href="/" className="card">
+        <Link href="/" className="card">
                 <h3>Back</h3>
-        </a>
+        </Link>
         
           <style jsx>{`
       main {

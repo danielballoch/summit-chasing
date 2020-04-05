@@ -70,7 +70,7 @@ function Home(props) {
       ))} */}
 
       {props.allProducts.map(product => (
-            <Link href={`/products/${product.slug.current}`} key={product.id}>
+            <Link href={`/products/${product.slug.current}`}>
                 <div  className="card" key={product.id}>
                 <h3>{product.title}</h3>
                     <img  
@@ -191,6 +191,7 @@ function Home(props) {
 
       .grid img {
           width: 100%;
+          height: 200px;
       }
 
       .card {
@@ -216,6 +217,7 @@ function Home(props) {
 
       .card h3 {
         margin: 0;
+        padding: 4px;
         font-size: 1.5rem;
       }
 
