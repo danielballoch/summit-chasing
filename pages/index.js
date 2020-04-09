@@ -70,13 +70,13 @@ function Home(props) {
       ))} */}
 
       {props.allProducts.map(product => (
-            <Link href={`/products/${product.slug.current}`} key={product.id}>
-                <div  className="card">
+            <Link href={`/products/${product.slug.current}`}>
+                <div  className="card" key={product.id}>
                 <h3>{product.title}</h3>
                     <img  
                     src={imageBuilder 
                     .image(product.defaultProductVariant.images[0].asset._ref)
-                    .width(200)
+                    .width(400)
                     .url()} 
                     />
                 </div>
@@ -191,13 +191,14 @@ function Home(props) {
 
       .grid img {
           width: 100%;
+          height: 200px;
       }
 
       .card {
         margin: 1rem;
         flex-basis: 45%;
         max-width: 300px;
-        padding: 1.5rem;
+        padding: .1rem;
         text-align: center;
         color: inherit;
         text-decoration: none;
@@ -216,6 +217,7 @@ function Home(props) {
 
       .card h3 {
         margin: 0;
+        padding: 4px;
         font-size: 1.5rem;
       }
 
