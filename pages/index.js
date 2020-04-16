@@ -16,6 +16,8 @@ export async function getStaticProps({ preview = false }) {
 }
 
 
+
+
 //Old Method - getting products from printful
 // export async function getStaticProps(){
 //     const API_URL = 'https://api.printful.com/store/products'

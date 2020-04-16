@@ -2,6 +2,8 @@ import App from 'next/app'
 import Layout from '../components/layout.js'
 import cartcontext from '../components/cartContext';
 
+
+
 export default class MyApp extends App {
 
   state = {

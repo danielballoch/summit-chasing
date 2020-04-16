@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Navbar from './Navbar.js'
 // import Footer from './Footer.js'
 
+
+
 function Layout(props) {
   return (
     <div>
