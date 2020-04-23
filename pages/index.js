@@ -1,6 +1,8 @@
 import Head from 'next/head'
-import fetch from 'isomorphic-unfetch'
+// import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
+// import Cookies from 'next-cookies'
+// import cookiejs from 'js-cookie'
 
 import { getAllProductsForHome } from '../lib/api'
 import { imageBuilder } from '../lib/api'
@@ -72,8 +74,8 @@ function Home(props) {
       ))} */}
 
       {props.allProducts.map(product => (
-            <Link href={`/products/${product.slug.current}`}>
-                <div  className="card" key={product.id}>
+            <Link href={`/products/${product.slug.current}`} key={product.id}>
+                <div  className="card">
                 <h3>{product.title}</h3>
                     <img  
                     src={imageBuilder 

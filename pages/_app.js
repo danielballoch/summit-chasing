@@ -1,49 +1,35 @@
 import App from 'next/app'
 import Layout from '../components/layout.js'
-import cartcontext from '../components/cartContext';
-
+// import fetch from 'isomorphic-unfetch'
+// import Cookies from 'next-cookies'
+// import cookiejs from 'js-cookie'
 
 
 export default class MyApp extends App {
+    
+    // componentDidMount(ctx){
+    //     // cookiejs.set('User', 2, { expires: 7 });
+    //     // return{
+    //     //     cookie1 : cookiejs.get(),
+    //     //     // cookie2 : Cookies(ctx)
+    //     // }
+    // }
 
-  state = {
-      cart : [],
-      carttotal : 0
-  }
-
-  componentDidMount = () => {
-    const cart = JSON.parse(localStorage.getItem('cart'));
-    const carttotal = JSON.parse(localStorage.getItem('total'));
-    if (cart) {
-      this.setState({
-         cart,
-         carttotal
-      });
-    }
-  };
-
-  addToCart = (product) => {
-    this.setState({
-        cart: [...this.state.cart, product]
-    });
-    localStorage.setItem('cart', JSON.stringify(this.state.cart));
-  }
-
-  calculateTotal = (price) => {
-    this.setState({
-      carttotal: this.state.carttotal + price
-    });
-    localStorage.setItem('total', JSON.stringify(this.state.carttotal));
-  }
+    // constructor(props) {
+    //     // super(props);
+    //     // this.state = {User1: props.cookie1};
+    //     // // this.state = {User2: props.cookie2};
+    //   }
 
   render () {
-    const { Component, pageProps } = this.props
+      console.log('is this app shit working')
+    // console.log(this.state.User1)
+    // console.log(this.state.User2)
+    const { Component, pageProps} = this.props
     return (
-      <cartcontext.Provider value={{cart: this.state.cart, addToCart: this.addToCart, total: this.calculateTotal, carttotal: this.state.carttotal}}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </cartcontext.Provider>
     )
   }
 }

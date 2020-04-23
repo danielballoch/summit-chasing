@@ -19,8 +19,9 @@ const handler = async (req, res) => {
             text: "SELECT * FROM products WHERE productid = $1",
             values: [productid]
           }
+        // const query = ("SELECT * FROM products")
           const product = await dbClient.query(query)
-          products.push(product)
+          products.push(product.rows[0])
     })
     data = products;
     //   req.body.productids.forEach(async (productid) => {

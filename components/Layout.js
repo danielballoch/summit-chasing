@@ -3,6 +3,8 @@ import Navbar from './Navbar.js'
 // import Footer from './Footer.js'
 
 
+//this isn't working for some reason, no console log etc??
+
 
 function Layout(props) {
   return (
