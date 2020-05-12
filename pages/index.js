@@ -1,13 +1,11 @@
 import Head from 'next/head'
 // import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
-// import Cookies from 'next-cookies'
-// import cookiejs from 'js-cookie'
-
 import { getAllProductsForHome } from '../lib/api'
 import { imageBuilder } from '../lib/api'
-
 import Link from 'next/link';
+import Heading from '../components/index-components/heading'
+import Products from '../components/index-components/products'
 
 //New Method getting products from Sanity CMS
 export async function getStaticProps({ preview = false }) {
@@ -55,43 +53,20 @@ function Home(props) {
     </Head>
 
     <main>
-      <h1 className="title">
-      <a href="#">Summit</a>Chasing
-      </h1>
+        <Heading/>
+        <Products allProducts={props.allProducts}/>
+        <div className="jumbotron">
+        <h1>Summit-Raffel-Drop</h1>
+        <p>Every month we release our summit-raffel-drop. A special made shirt, hoodie, print, or accessory, which is only avalible for that month. 
+        These drops also act as a raffel, if they sell out before the month is over, you could be 1 of our 5 winners of a <a href="#">SummitChasing gift pack.</a>
+        </p>
 
-      <p className="description">
-        Clothing and prints for those striving for success
-      </p>
-
-      <div className="grid">
-      {/* {props.products.map(product => (
-        <Link href={`/products/${product.id}`}  key={product.id}>
-            <div className="card">
-                <img src={product.thumbnail_url} alt={product.name} />
-                <h3>{product.name}</h3>
-            </div>
-        </Link>
-      ))} */}
-
-      {props.allProducts.map(product => (
-            <Link href={`/products/${product.slug.current}`} key={product.id}>
-                <div  className="card">
-                <h3>{product.title}</h3>
-                    <img  
-                    src={imageBuilder 
-                    .image(product.defaultProductVariant.images[0].asset._ref)
-                    .width(400)
-                    .url()} 
-                    />
-                </div>
-            </Link>
-      ))}
-
-        <a href="https://nextjs.org/learn" className="card">
-          <h3>Shop All &rarr;</h3>
-        </a>
-
-      </div>
+        <h3>May's Drop:</h3>
+        <p>*big pics, qty countdown, time remaining etc * show don't tell, tell in sub-text</p>
+        <p>Opt in to mailing list, notification if you win.</p>
+        </div>
+        
+        
     </main>
 
     <footer>
@@ -104,7 +79,15 @@ function Home(props) {
       </a>
     </footer>
 
-    <style jsx>{`
+
+    <style jsx global>{`
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      }
       .container {
         min-height: 100vh;
         padding: 0 0.5rem;
@@ -236,16 +219,6 @@ function Home(props) {
           width: 100%;
           flex-direction: column;
         }
-      }
-    `}</style>
-
-    <style jsx global>{`
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
       }
 
       * {

@@ -1,94 +1,148 @@
 // import { checkCookie } from '../lib/session'
-import cookiejs from 'js-cookie'
-import Cookies from 'next-cookies'
+import Cookies from 'js-cookie'
+// import Cookies from 'next-cookies'
+import useSWR, { mutate } from 'swr'
 import fetch from 'isomorphic-unfetch'
 import {getUser, getCart, getCartProducts, getCartProductDetails} from '../lib/dbcalls'
+import Header from '../components/cart-components/header'
+import ProductSection from '../components/cart-components/products'
+import Summery from '../components/cart-components/summery'
+import { useCallback } from 'react'
 
 
 
 
 // cookiejs.set('User', 2, { expires: 7 });
-export async function getServerSideProps(ctx) {
+// export async function getServerSideProps(ctx) {
     
-    const User = Cookies(ctx).User
+//     const User = Cookies(ctx).User
  
-        if (User){
-            //get profile - needs to be transfered to app so can be used with cart and nav page
-            console.log("Cookie: " + User)
-            const profile = await getUser(User)
-            console.log(profile);
-            //this could be transfered also since it's used in nav and this page
-            const cart = await getCart(User)
-            console.log(cart)
+//         if (User){
+//             const profile = await getUser(User)
+//             const cart = await getCart(User)
+//             const cartproducts = await getCartProducts(cart.orderid)
+
+//             var productids = []
+//             cartproducts.forEach(product => {
+//                 productids.push(product.productid)
+//             }); 
+
+//             const productdetails = await getCartProductDetails(productids)
+
+//             console.log(productdetails,cartproducts,cart,profile)
+//             return { props: { profile, cart, cartproducts, productids, productdetails} }
+//         }
+
+// }
+
+let url1 = 'http://localhost:3000/api/db/getUser'
+let url2 = 'http://localhost:3000/api/db/getCart'
+let url3 = 'http://localhost:3000/api/db/getCartProducts'
+let url4 = 'http://localhost:3000/api/db/getCartProductDetails'
 
 
-            //this could also be transfered
-            const cartproducts = await getCartProducts(cart.orderid)
-            console.log(cartproducts)
 
-            //specific to this page, leave here
-            var productids = []
-            cartproducts.forEach(product => {
-                productids.push(product.productid)
-            }); 
+function Cart (props){
 
-            const productdetails = await getCartProductDetails(productids)
-            console.log(productdetails)
-            return { props: { profile, cart, cartproducts, productids, productdetails} }
+
+    const fetcher = (...args) => fetch(args[0], {
+        method: 'post',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({[args[2]]:args[1]})
+      }).then(res => res.json())
+
+      let User = Cookies.get('User')
+    //   let cartproducts;
+    //   let productdetails = []
+
+    async function feUpdate(){
+        console.log("mutate called");
+        console.log("isValidated: ", isValidating)
+        mutate();
+        console.log(cartitems);
+        console.log("isValidated: ", isValidating)
+    }
+
+      
+        const { data: user, error} = useSWR(() => [url1, User, "User"], fetcher, {suspense: false });
+        console.log("User returned: ", user)
+        const { data: cart, error2} = useSWR(() => [url2, user.customerid, 'User'], fetcher, { suspense: false });
+        console.log("Cart returned: ", cart)
+        // const OrderId = Cookies.get('orderid')
+        const { data: cartitems, error3, mutate, isValidating} = useSWR(() => [url3, cart.orderid, 'orderid'], fetcher, { suspense: false });
+        console.log("Cart items: ", cartitems)
+        // let productids = []
+        // if(cartitems){
+        //     cartitems.forEach(product => {
+        //         productids.push(product.productid)
+        //     });    
+        // }
+        // console.log("product ids", productids);
+        console.log("before productdetails call")
+        const { data: productdetails, error4} = useSWR(() => [url4, cartitems, 'productids'], fetcher, { suspense: false });
+        console.log("productdetails: ", productdetails)
+        
+        
+        let itemtotal = 0;
+        let costtotal = 0;
+        if(productdetails && cartitems){
+            productdetails.forEach((product, i) => {
+                itemtotal = itemtotal + (cartitems[i].qty);
+                costtotal = costtotal + (product.price * cartitems[i].qty)
+            })
+            console.log("totals: ", itemtotal, costtotal)
         }
+        
+        
+        
+        // productdetails = products;
 
-}
-
+        // cartproducts = cartitems;
+        
+      
+      
+    
+    
+      
+    // feUpdate = feUpdate.bind(this);
+  
 
     
-       
 
 
 
 
-function Testcookies2 (props){
-    if (props) {
-    console.log(props)
-    //foreach to get total price of cart and total items count.
-    let itemtotal = 0;
-    let costtotal = 0;
-    props.productdetails.forEach((product, i) => {
-        itemtotal = itemtotal + (props.cartproducts[i].qty);
-        costtotal = costtotal + (product.price * props.cartproducts[i].qty)
-    })
 
-    return (
-    <div>
-        <h1>Hello</h1>
-        <h1>Hey {props.profile.fname}, here's your cart so far!</h1>
-        <div>
-        <div className="card">
-            <div className="card-body">
-                <h5 className="card-title">Summery:</h5>
-                <p>Items Quantity: {itemtotal}</p>
-                <p>Total Cost:  {costtotal} USD</p>  
+    if (productdetails) {
+        console.log(props)
+        // foreach to get total price of cart and total items count.
+        return (
+            <div className="jumbotron jumbotron-fluid mt-5 d-flex flex-column justify-content-center">
+                <Header name={user.fname}/>
+                <div className={!isValidating? "card text-center" : "text-center"}>isValidating??</div>
+                <div className="d-flex flex-row justify-content-center">
+                <button onClick={() => feUpdate()}>Big Update Button</button>
+                    <ProductSection products={productdetails} cart={cart} cartproducts={cartitems} feUpdate={feUpdate}/>
+                    <Summery itemtotal={itemtotal} costtotal={costtotal}/>
+                </div>
             </div>
-        </div>
-        <h2>products:</h2>
-        {props.productdetails.map((product, i) => (
-            <div className="card">
-            <div className="card-body">
-                <h5 className="card-title">{product.name}</h5>
-                <p>{product.description}</p>
-                <p>Size Selected: {product.size}</p>
-                <p>Price: {product.price} USD EA</p>
-                <p>Total: {product.price * props.cartproducts[i].qty} USD</p>
-                <p>Quantity: {props.cartproducts[i].qty}</p>
-            </div>
-        </div>
-        ))}
-        
-        </div>
-    </div>
-    )
+        )
     } else {
-        return (<div>loading...</div>)
+        console.log("props", props)
+        return (
+            <div className="jumbotron jumbotron-fluid mt-5 d-flex flex-column justify-content-center">
+            <Header name={"Loading..."}/>
+            <div className={!isValidating? "card text-center" : "text-center"}>isValidating??</div>
+                <div className="d-flex flex-row justify-content-center">
+                <button onClick={() => feUpdate()}>Big Update Button</button>
+                    <ProductSection products={[]} cart={cart} cartproducts={cartitems} feUpdate={feUpdate}/>
+                    <Summery itemtotal={itemtotal} costtotal={costtotal} />
+                </div>
+            </div>
+    )
     }
 }
 
-export default Testcookies2
+export default Cart

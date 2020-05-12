@@ -28,7 +28,7 @@ const handler = async (req, res) => {
 //   ]);
 
   res.status(200).json(data);
-//   await dbClient.end();
+  await dbClient.end();
 };
   
 export default handler;

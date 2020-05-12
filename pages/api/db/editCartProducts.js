@@ -21,15 +21,18 @@ import dbClient from '../../../lib/database';
 
 //props would actually come from client fetch
 let getProps = () => {
-    return { task: 'ADD', orderid:321, productid: '#5e7a85543245b7'};
+    return { task: 'ADD', orderid:321, productid: '#5e7a855432483c'};
 }
 
 //need to check if product already exists
 const handler = async (req, res) => {
-    const props = getProps();
+    if (req.body){
+    let {task, orderid, productid} = req.body
+    console.log(task, orderid, productid);
+    // const props = getProps();
     const checkProducts = {
         text: 'SELECT * FROM orderproducts WHERE orderid=$1 AND productid=$2',
-        values: [props.orderid,props.productid]
+        values: [orderid,productid]
     };
 
     //check incoming props, one client promise for adding products one for deleting? or check in the promise itself?
@@ -41,16 +44,16 @@ const handler = async (req, res) => {
             if (products.rowCount === 0){
                 //no matching products
                 console.log("no match, inserting product")
-                if(props.task === 'ADD'){
+                if(task === 'ADD'){
                     const query = {
                         text: 'INSERT INTO orderproducts(orderid, productid, qty) VALUES($1, $2, $3)',
-                        values: [props.orderid, props.productid, 1]
+                        values: [orderid, productid, 1]
                     }
-                    console.log('add', props.orderid, props.productid)
+                    console.log('add', orderid, productid)
                     dbClient
                         .query(query)
                         .then(allProducts => {
-                            console.log("product " + props.task + " success")
+                            console.log("product " + task + " success")
                             res.status(200).json(allProducts)
                         })
                         .catch(e => {
@@ -63,22 +66,34 @@ const handler = async (req, res) => {
                     res.status(500).json('no product to delete')
                 }  
             } else {
-                 //matching products
-                 console.log("match, update product")
-                 let toAdd=0;
-                 if(props.task === 'ADD'){
+                //matching products
+                //delete
+                let query = {}
+                if(task === 'REMOVE' && products.rows[0].qty < 2){
+                    console.log("match, delete product" + productid)
+                    query = {
+                        text: 'DELETE FROM orderproducts WHERE orderid=$1 AND productid=$2',
+                        values: [orderid, productid]
+                    }
+                }  else {
+                    //update
+                    console.log("match, update product" + productid)
+                    let toAdd=0;
+                    if(task === 'ADD'){
                     toAdd += 1;
-                 } else if (props.task === 'REMOVE'){
+                    } else if (task === 'REMOVE'){
                     toAdd -= 1;
-                 }
-                 const query = {
+                    }
+                    query = {
                     text: 'UPDATE orderproducts SET qty=qty+$3 WHERE orderid=$1 AND productid=$2',
-                    values: [props.orderid, props.productid, toAdd]
+                    values: [orderid, productid, toAdd]
+                    }
                 }
+                 
                  dbClient
                          .query(query)
                          .then(allProducts => {
-                             console.log("product " + props.task + " success")
+                             console.log("product " + task + " success")
                              res.status(200).json(allProducts)
                          })
                          .catch(e => {
@@ -91,7 +106,12 @@ const handler = async (req, res) => {
             console.error(e.stack);
             res.status(500).json(e.stack)
         })
-  await dbClient.end();
+//   await dbClient.end();
+    } else {
+        console.log("product not valid")
+        res.status(500).json('product not valid')
+    }
+    // await dbClient.end();
 };
   
 export default handler;

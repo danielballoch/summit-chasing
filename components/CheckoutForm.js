@@ -107,31 +107,32 @@ export default function CheckoutForm() {
     
         return (
             <div>
-          <form onSubmit={handleSubmit}>
-            <h1>
-              {currency.toLocaleUpperCase()}{" "}
+          <form onSubmit={handleSubmit} className="card p-4">
+            {/* <h2>
+              {currency.toLocaleUpperCase()}{" "} */}
               {/* {amount} */}
               {/* {userLocale} */}
               {/* replace navigator.language w/ userLocale, that way numbers are in the right language */}
-              {amount.toLocaleString(userLocale, {
+              {/* {amount.toLocaleString(userLocale, {
                 minimumFractionDigits: 2
               })}{" "}
-            </h1>
-            <h4>Pre-order the Pasha package</h4>
+            </h2> */}
+            {/* <h4>Pre-order the Pasha package</h4> */}
     
             <div className="sr-combo-inputs">
               <div className="sr-combo-inputs-row">
+                <label for="name" className="p-3">Name on card</label>   
                 <input
                   type="text"
                   id="name"
                   name="name"
                   placeholder="Name"
                   autoComplete="cardholder"
-                  className="sr-input"
+                  className="sr-input "
                 />
               </div>
     
-              <div className="sr-combo-inputs-row">
+              <div className="sr-combo-inputs-row p-3">
                 <CardElement
                   className="sr-input sr-card-element"
                   options={options}
@@ -142,7 +143,7 @@ export default function CheckoutForm() {
             {error && <div className="message sr-field-error">{error}</div>}
     
             <button
-              className="btn"
+              className="btn btn-success"
               disabled={processing || !clientSecret || !stripe}
             >
               {processing ? "Processing…" : "Pay"}

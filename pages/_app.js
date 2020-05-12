@@ -1,34 +1,26 @@
 import App from 'next/app'
 import Layout from '../components/layout.js'
-// import fetch from 'isomorphic-unfetch'
-// import Cookies from 'next-cookies'
-// import cookiejs from 'js-cookie'
+
 
 
 export default class MyApp extends App {
-    
-    // componentDidMount(ctx){
-    //     // cookiejs.set('User', 2, { expires: 7 });
-    //     // return{
-    //     //     cookie1 : cookiejs.get(),
-    //     //     // cookie2 : Cookies(ctx)
-    //     // }
-    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+        productAdded: 0
+        };
+    }
 
-    // constructor(props) {
-    //     // super(props);
-    //     // this.state = {User1: props.cookie1};
-    //     // // this.state = {User2: props.cookie2};
-    //   }
-
-  render () {
-      console.log('is this app shit working')
-    // console.log(this.state.User1)
-    // console.log(this.state.User2)
+    productAdded = () => {
+        this.setState({productAdded: this.state.productAdded += 1})
+        console.log(this.state)
+    }
+    render () {
+      
     const { Component, pageProps} = this.props
     return (
-        <Layout>
-          <Component {...pageProps} />
+        <Layout productAdded={this.state.productAdded}>
+          <Component {...pageProps} productAdded={this.productAdded} added={this.state.productAdded}/>
         </Layout>
     )
   }
