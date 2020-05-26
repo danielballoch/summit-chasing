@@ -121,12 +121,12 @@ export default function CheckoutForm() {
     
             <div className="sr-combo-inputs">
               <div className="sr-combo-inputs-row">
-                <label for="name" className="p-3">Name on card</label>   
+                <label for="name" className="p-3">Name on card:</label>   
                 <input
                   type="text"
                   id="name"
                   name="name"
-                  placeholder="Name"
+                  placeholder=""
                   autoComplete="cardholder"
                   className="sr-input "
                 />

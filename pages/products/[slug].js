@@ -9,6 +9,7 @@ import AddCart from "../../components/product-page-components/add-cart"
 import Body from "../../components/product-page-components/body"
 import Options from "../../components/product-page-components/options"
 import Notification from "../../components/product-page-components/notification"
+import Specifications from "../../components/product-page-components/specifications"
 import globalStyles from '../../components/product-page-components/global'
 
 
@@ -28,12 +29,14 @@ constructor(props){
         activeColor: "White",
         notification: false,
         addProductRes: "",
+        message: ""
     };
 
     handleClick() {
         console.log("toggle state", this.state.notification);
         this.setNotification();
         setTimeout(() => this.setNotification(), 2200)
+        this.setState({message: (this.props.product.title +" - " + this.state.activeColor +"/"+ this.state.activeSize + " added to cart!")})
     }
 
     setNotification(){
@@ -53,25 +56,34 @@ constructor(props){
     console.log(this.props)
     
     if (product) {
-        const message = (product.title +" - " + this.state.activeColor +"/"+ this.state.activeSize + " added to cart!") 
         return (
             <main>
-                <Notification notification={message} prompt={this.state.notification}/>
-                
-                <Heading price={this.props.product.price} title={this.props.product.title}/>
-                <Carousal images={product.images}/>
-                <Options sizes={product.sizes} colors={product.colors} 
-                    activeSize={this.state.activeSize} activeColor={this.state.activeColor} 
-                    setSize={this.setSize} setColor={this.setColor}
-                />
-                <AddCart activeColor={this.state.activeColor.toLocaleLowerCase()} 
-                    activeSize={this.state.activeSize} 
-                    productid={product.id} 
-                    orderid={orderid} 
-                    productAdded={this.props.productAdded} 
-                    handleClick={this.handleClick}/> 
+                <Notification notification={this.state.message} prompt={this.state.notification}/>
+                <div className="d-flex justify-content-center">
+                    <div className="w-50">
+                        <Carousal images={product.images}/>
+                    </div>
+                    <div className="w-50 sticky product-stick">
+                        <Heading price={this.props.product.price} title={this.props.product.title}/>
+                        <Body title={product.title} body={product.body}/>
+                        <Options sizes={product.sizes} colors={product.colors} 
+                        activeSize={this.state.activeSize} activeColor={this.state.activeColor} 
+                        setSize={this.setSize} setColor={this.setColor}
+                        />
+                        <AddCart activeColor={this.state.activeColor.toLocaleLowerCase()} 
+                        activeSize={this.state.activeSize} 
+                        productid={product.id} 
+                        orderid={orderid} 
+                        productAdded={this.props.productAdded} 
+                        handleClick={this.handleClick}   
+                        /> 
+                        <Specifications specs={this.props.product.specifications}/>
+                        
+                    </div>
 
-                <Body title={product.title} body={product.body}/>
+                </div>
+                
+                
                 <style jsx global>
                     {globalStyles}
                 </style>

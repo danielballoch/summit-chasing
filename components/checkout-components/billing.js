@@ -25,11 +25,9 @@ export default function billing(){
 
 
         <div className={active.value?  "null" : "d-none" }>
-            <Shipping/>
+            <Shipping billing={true}/>
         </div>
-        
-
-        
+        <button type="submit" className={active.value?  "d-none" : "btn btn-primary w-100 mt-5" }>Continue to Payment</button>
     </div>
     )
 }

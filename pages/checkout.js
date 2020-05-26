@@ -4,6 +4,8 @@ import CheckoutOption from "../components/checkout-components/checkout-option"
 import Shipping from "../components/checkout-components/shipping"
 import Billing from "../components/checkout-components/billing"
 import Payment from "../components/checkout-components/payment"
+import CartDisplay from "../components/checkout-components/display-cart"
+import Cookies from 'js-cookie'
 
 
 
@@ -13,19 +15,27 @@ import Payment from "../components/checkout-components/payment"
         this.state = {active: true};  
     }
         render(){
+        let User = Cookies.get('User');
+        
         console.log("Checkout Props:",this.props)
         return(
-            <div className="card w-50 p-4 mt-5">
-                <CheckoutOption title="1. Shipping">
-                    <Shipping/>
-                </CheckoutOption>
-                <CheckoutOption title="2. Billing">
-                    <Billing/>
-                </CheckoutOption>
-                <CheckoutOption title="3. Payment">
-                    <Payment/>
-                </CheckoutOption>
+            <div className="d-flex flex-row justify-content-center">
+                <div className="card w-50 p-4 mt-5">
+                    <CheckoutOption title="1. Shipping" start_value={true}>
+                        <Shipping customerid={User}/>
+                    </CheckoutOption>
+                    <CheckoutOption title="2. Billing">
+                        <Billing/>
+                    </CheckoutOption>
+                    <CheckoutOption title="3. Payment">
+                        <Payment/>
+                    </CheckoutOption>
+                </div>
+                <div className="h-25 p-4 mt-5 sticky">
+                    <CartDisplay/>
+                </div>
             </div>
+           
         )
      }
 

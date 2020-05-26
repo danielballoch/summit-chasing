@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Navbar from './Navbar.js'
-// import Footer from './Footer.js'
+import globalStyles from '../components/product-page-components/global'
+import Footer from './Footer.js'
 
 
 //this isn't working for some reason, no console log etc??
@@ -17,7 +18,10 @@ function Layout(props) {
       </Head>
       <Navbar productAdded={props.productAdded}/>
        <div className="container-fluid">{props.children}</div>
-      {/* <Footer/> */}
+      <Footer/>
+      <style jsx global>
+                    {globalStyles}
+        </style>
     </div>
   )
 }

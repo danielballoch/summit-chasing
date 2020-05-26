@@ -18,7 +18,7 @@ export default function summery ({itemtotal, costtotal}){
                     
                 </div>
                 <Link href="/checkout">
-                <button  className="mx-auto w-100 btn btn-success" >Checkout</button>
+                <button  className="w-100 btn btn-success checkout-button" >Checkout</button>
                 </Link>
             </div>
     )

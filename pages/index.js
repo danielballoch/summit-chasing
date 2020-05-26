@@ -1,19 +1,48 @@
+
 import Head from 'next/head'
 // import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
-import { getAllProductsForHome } from '../lib/api'
+import { getFeaturedProductsForHome } from '../lib/api'
 import { imageBuilder } from '../lib/api'
 import Link from 'next/link';
 import Heading from '../components/index-components/heading'
 import Products from '../components/index-components/products'
+import Raffle from '../components/index-components/raffle'
+import { useState, useEffect, useRef} from 'react';
+
+
+
 
 //New Method getting products from Sanity CMS
 export async function getStaticProps({ preview = false }) {
-    const allProducts = await getAllProductsForHome(preview)
+    const allProducts = await getFeaturedProductsForHome(preview)
     return {
       props: { allProducts, preview },
     }
 }
+
+//create timer with hooks for raffel drop 
+function useInterval(callback, delay) {
+    const savedCallback = useRef();
+  
+    // Remember the latest function.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+  
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  }
+
+
 
 
 
@@ -43,7 +72,28 @@ export async function getStaticProps({ preview = false }) {
 
 
 function Home(props) {
+    var moment = require('moment'); // require
+    let [startDate, setStartDate] = useState(new Date());
+    let [endDate, setEndDate] = useState(new Date(2020, 5, 0))
+
+    const start = moment(startDate);
+    const end = moment(endDate);
+    const diff = end.diff(start);
+    const diffDuration = moment.duration(diff);
+
+
+    useInterval(() => {
+    setStartDate(new Date());  
+    }, 1000);
+
+
     console.log(props)
+    console.log("Start Date", startDate)
+    console.log("End Date", endDate)
+    let difDays = diffDuration.days();
+    let difHours = diffDuration.hours();
+    let difMinutes = diffDuration.minutes();
+    let difSeconds = diffDuration.seconds();
 
     return (
   <div className="container">
@@ -54,30 +104,19 @@ function Home(props) {
 
     <main>
         <Heading/>
+        
         <Products allProducts={props.allProducts}/>
-        <div className="jumbotron">
-        <h1>Summit-Raffel-Drop</h1>
-        <p>Every month we release our summit-raffel-drop. A special made shirt, hoodie, print, or accessory, which is only avalible for that month. 
-        These drops also act as a raffel, if they sell out before the month is over, you could be 1 of our 5 winners of a <a href="#">SummitChasing gift pack.</a>
-        </p>
-
-        <h3>May's Drop:</h3>
-        <p>*big pics, qty countdown, time remaining etc * show don't tell, tell in sub-text</p>
-        <p>Opt in to mailing list, notification if you win.</p>
-        </div>
+        <a href="/shop-all" className="card mb-5">
+                <h3>Shop All</h3>
+        </a>
+        <p>Drop Ends in {difDays} days, {difHours} hours, {difMinutes} Minutes and {difSeconds} seconds. </p>
+        <Raffle difDays={difDays} difHours={difHours} difMinutes={difMinutes} difSeconds={difSeconds}/>
+        
         
         
     </main>
 
-    <footer>
-      <a
-        href="https://zeit.co?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
-      </a>
-    </footer>
+    
 
 
     <style jsx global>{`

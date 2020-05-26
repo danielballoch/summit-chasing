@@ -108,17 +108,23 @@ function Navbar (props) {
 
     // if (error) return <div>failed to load</div>
     if (!cartitems) return (
-        <nav className="navbar navbar-light bg-light fixed-top">
-            <h3><Link href="/">Summit</Link>Chasing</h3>
-            <a href="/cart" className="btn btn-outline-primary my-2 my-sm-0"> Cart</a>
-        </nav>
+        <div className="nav-outer">
+            <nav className="navbar navbar-light bg-light fixed-top">
+                <h3><Link href="/">Summit</Link>Chasing</h3>
+                <a href="/cart" className="btn btn-outline-primary my-2 my-sm-0"> Cart</a>
+            </nav>
+        </div>
     )
     return (
-        <nav className="navbar navbar-light bg-light fixed-top">
-            <h3><Link href="/">Summit</Link>Chasing</h3>
-            <a href="/cart" className="btn btn-outline-primary my-2 my-sm-0">{user.fname}'s Cart: {productcount + count}</a>
-            
-        </nav>
+        <div className="nav-outer">
+            <nav className="navbar navbar-light bg-light fixed-top">
+                <Link href="/">
+                <h3 className="nav-logo"><span className="nav-summit">Summit</span>Chasing</h3>
+                </Link>
+                <a href="/cart" className="btn btn-outline-primary my-2 my-sm-0">{user.fname}'s Cart: {productcount + count}</a>
+                
+            </nav>
+        </div>
     )
 
 };

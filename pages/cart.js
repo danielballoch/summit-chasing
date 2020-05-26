@@ -121,9 +121,10 @@ function Cart (props){
         return (
             <div className="jumbotron jumbotron-fluid mt-5 d-flex flex-column justify-content-center">
                 <Header name={user.fname}/>
-                <div className={!isValidating? "card text-center" : "text-center"}>isValidating??</div>
+                {/* is validating to see if cart is updating or not */}
+                {/* <div className={!isValidating? "card text-center" : "text-center"}>isValidating??</div> */}
                 <div className="d-flex flex-row justify-content-center">
-                <button onClick={() => feUpdate()}>Big Update Button</button>
+                {/* <button onClick={() => feUpdate()}>Big Update Button</button> */}
                     <ProductSection products={productdetails} cart={cart} cartproducts={cartitems} feUpdate={feUpdate}/>
                     <Summery itemtotal={itemtotal} costtotal={costtotal}/>
                 </div>
@@ -134,9 +135,11 @@ function Cart (props){
         return (
             <div className="jumbotron jumbotron-fluid mt-5 d-flex flex-column justify-content-center">
             <Header name={"Loading..."}/>
-            <div className={!isValidating? "card text-center" : "text-center"}>isValidating??</div>
+            {/* <div className={!isValidating? "card text-center" : "text-center"}>isValidating??</div> */}
                 <div className="d-flex flex-row justify-content-center">
-                <button onClick={() => feUpdate()}>Big Update Button</button>
+
+                {/* big update button to test mutate */}
+                {/* <button onClick={() => feUpdate()}>Big Update Button</button> */}
                     <ProductSection products={[]} cart={cart} cartproducts={cartitems} feUpdate={feUpdate}/>
                     <Summery itemtotal={itemtotal} costtotal={costtotal} />
                 </div>

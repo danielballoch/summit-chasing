@@ -2,10 +2,10 @@ import { imageBuilder } from '../../lib/api'
 import Link from 'next/link';
 export default function Products({allProducts}){
     return(
-        <div className="grid">
+        <div className="featured">
             {allProducts.map(product => (
                 <Link href={`/products/${product.slug.current}`} key={product.id}>
-                    <div  className="card">
+                    <div  className="index-image">
                     <h3>{product.title}</h3>
                         <img  
                         src={imageBuilder 
@@ -16,9 +16,7 @@ export default function Products({allProducts}){
                     </div>
                 </Link>
             ))}
-            <a href="https://nextjs.org/learn" className="card">
-                <h3>Shop All &rarr;</h3>
-            </a>
+            
         </div>
     )
 }
