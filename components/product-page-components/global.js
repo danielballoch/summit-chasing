@@ -120,6 +120,26 @@ export default css.global`
       .index-image img {
         width: 100%;
       }
+      
+      .filler-container {
+        //   width: 50vw;
+          display: flex;
+          flex-wrap: wrap;
+          width: 100%;
+      }
+      .filler-images {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #e9ecef;
+          color: white;
+          font-size: 60px;
+          width: calc(50%);
+          background-clip: content-box;
+          padding: 10px;
+          height: calc(25vw*1.15)
+
+      }
 
       .navbar {
           max-width: 1200px;
@@ -200,6 +220,7 @@ export default css.global`
           position: fixed;
           z-index: 100;
           top: 33.6px;
+          opacity: 0;
           background-color: #4caf50;
           color: white;
           width: 100%;
@@ -208,6 +229,7 @@ export default css.global`
       }
       .notif_active{
         top: 57.6px;
+        opacity: 1;
       }
 
       .active {

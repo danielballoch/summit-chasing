@@ -49,9 +49,12 @@ constructor(props){
         this.setState({activeColor:color})
     }
 
+
     render(){
+    // const hat = true;
     const product = this.props.product;
     const orderid = Cookies.get('orderid')
+    const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     console.log(orderid)
     console.log(this.props)
     
@@ -90,7 +93,40 @@ constructor(props){
             </main>
         );
     } else {
-        return (<div>Loading...</div>)
+        return (
+            <main>
+                <Notification notification={this.state.message} prompt={this.state.notification}/>
+                <div className="d-flex justify-content-center">
+                    <div className="w-50">
+                        <Carousal images={[]}/>
+                    </div>
+                    <div className="w-50 sticky product-stick">
+                        <Heading price="00" title={"product title"}/>
+                        <Body title={"product title"} body={lorem}/>
+                        <Options sizes={["S","M","L"]} colors={["color1","color2", "color3"]} 
+                        activeSize={this.state.activeSize} activeColor={this.state.activeColor} 
+                        setSize={this.setSize} setColor={this.setColor}
+                        />
+                        <AddCart activeColor={this.state.activeColor.toLocaleLowerCase()} 
+                        activeSize={""} 
+                        productid={"product.id"} 
+                        orderid={"orderid"} 
+                        productAdded={[]} 
+                        handleClick={this.handleClick}   
+                        /> 
+                        <Specifications specs={["specification: specification 1","specification: specification 2"]}/>
+                        
+                    </div>
+
+                </div>
+                
+                
+                <style jsx global>
+                    {globalStyles}
+                </style>
+            </main>
+        
+            )
     }
 }
     
