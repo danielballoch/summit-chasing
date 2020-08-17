@@ -12,17 +12,31 @@ import Cookies from 'js-cookie'
  class Checkout extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {active: true};  
+        this.state = {
+            active: true,
+            shippingop: true,
+            billingop: false,
+            paymentop: false
+        };  
     }
+
+    
         render(){
         let User = Cookies.get('User');
+
+        const handleChange= (evt) => {
+            this.setState({
+                shippingop: !this.state.shippingop
+            });
+            console.log("state updated: " + this.state.shippingop)
+        }
         
         console.log("Checkout Props:",this.props)
         return(
             <div className="d-flex flex-row justify-content-center">
                 <div className="card w-50 p-4 mt-5">
-                    <CheckoutOption title="1. Shipping" start_value={true}>
-                        <Shipping customerid={User}/>
+                    <CheckoutOption title="1. Shipping" start_value={this.state.shippingop}>
+                        <Shipping customerid={User} handleChange={handleChange}/>
                     </CheckoutOption>
                     <CheckoutOption title="2. Billing">
                         <Billing/>

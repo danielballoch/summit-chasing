@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function shipping({customerid, billing}){
+export default function shipping({customerid, billing, handleChange}){
     const [fName, setFName] = useState("");
     const [lName, setLName] = useState("");
     const [address, setAddress] = useState("");
@@ -14,6 +14,7 @@ export default function shipping({customerid, billing}){
     console.log(fName)
 
     const handleSubmit = (evt) => {
+        handleChange();
         console.log("submit button, toggle state")
     }
 
