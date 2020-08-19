@@ -1,7 +1,7 @@
 import Shipping from "./shipping"
 import { useState } from 'react';
 
-export default function billing(){
+export default function billing({customerid, handleChange}){
     const [active, toggleActive] = useState({value: false});
     return(<div>
         <div class="form-check">
@@ -25,9 +25,9 @@ export default function billing(){
 
 
         <div className={active.value?  "null" : "d-none" }>
-            <Shipping billing={true}/>
+            <Shipping billing={true} customerid={customerid} handleChange={handleChange} />
         </div>
-        <button type="submit" className={active.value?  "d-none" : "btn btn-primary w-100 mt-5" }>Continue to Payment</button>
+        {/* <button type="submit" className={active.value?  "d-none" : "btn btn-primary w-100 mt-5" }>Continue to Payment</button> */}
     </div>
     )
 }

@@ -20,6 +20,7 @@ export default function shipping({customerid, billing, handleChange}){
 
     let btnText = "Continue to Billing";
     if (billing){btnText="Continue to Payment"}
+    else {billing = false;}
     return(
         <form>
             <div class="form-row">
@@ -99,7 +100,7 @@ export default function shipping({customerid, billing, handleChange}){
                         headers: {
                             "Content-Type": "application/json"
                         },
-                        body: JSON.stringify({customerid: customerid, fName: fName.fName, lName: lName.lName, address: address.address, address2: address2.address2, city: city.city, state: state.state, zip:zip.zip, country:country.country, phone:phone.phone, email:email.email})
+                        body: JSON.stringify({billing: billing, customerid: customerid, fName: fName.fName, lName: lName.lName, address: address.address, address2: address2.address2, city: city.city, state: state.state, zip:zip.zip, country:country.country, phone:phone.phone, email:email.email})
                         }).then(res => {console.log("Uploading data to customer table")})
                     }}
             >

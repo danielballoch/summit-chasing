@@ -24,10 +24,23 @@ import Cookies from 'js-cookie'
         render(){
         let User = Cookies.get('User');
 
-        const handleChange= (evt) => {
+        const handleChange = (evt) => {
             this.setState({
                 shippingop: !this.state.shippingop
             });
+            this.setState({
+                billingop: true
+            })
+            console.log("state updated: " + this.state.shippingop)
+        }
+
+        const handleBillChange = (evt) => {
+            this.setState({
+                billingop: !this.state.billingop
+            });
+            this.setState({
+                paymentop: true
+            })
             console.log("state updated: " + this.state.shippingop)
         }
         
@@ -35,13 +48,13 @@ import Cookies from 'js-cookie'
         return(
             <div className="d-flex flex-row justify-content-center">
                 <div className="card w-50 p-4 mt-5">
-                    <CheckoutOption title="1. Shipping" start_value={this.state.shippingop}>
+                    <CheckoutOption title="1. Shipping" startvalue={this.state.shippingop}>
                         <Shipping customerid={User} handleChange={handleChange}/>
                     </CheckoutOption>
-                    <CheckoutOption title="2. Billing">
-                        <Billing/>
+                    <CheckoutOption title="2. Billing" startvalue={this.state.billingop} >
+                        <Billing customerid={User} handleChange={handleBillChange}/>
                     </CheckoutOption>
-                    <CheckoutOption title="3. Payment">
+                    <CheckoutOption title="3. Payment" startvalue={this.state.paymentop}>
                         <Payment/>
                     </CheckoutOption>
                 </div>
