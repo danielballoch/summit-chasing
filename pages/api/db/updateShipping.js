@@ -17,6 +17,10 @@ const handler = async (req, res) => {
        console.log(req.body.fName)
         //check whether shipping or billing
         if (billing){
+            //if same {INSERT INTO customerbilling (fname, lname, address, address2, city, state, zip, country)
+            //SELECT column1, column2, column3, ...
+            //FROM customer
+            //WHERE customerid=$1; }
             const query = {
                 text: 'UPDATE customerbilling SET fname=$2, lname=$3, address=$4, address2=$5, city=$6, state=$7, zip=$8, country=$9 WHERE customerid=$1',
                 values: [customerid, fName, lName, address, address2, city, state, zip, country]

@@ -128,7 +128,7 @@ export default function CheckoutForm() {
                   name="name"
                   placeholder=""
                   autoComplete="cardholder"
-                  className="sr-input "
+                  className="sr-input ph-3"
                 />
               </div>
     
