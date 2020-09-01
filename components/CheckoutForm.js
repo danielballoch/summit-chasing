@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
 import getUserLocale from 'get-user-locale';
+import Cookies from 'js-cookie'
 // import "./CheckoutForm.css";
 import CardSection from './CardSelection';
 
+
 import api from "../lib/stripe-api";
+import productDetails from "../pages/api/product-details";
 
 
 export default function CheckoutForm() {
 
-  const [amount, setAmount] = useState(0);
-  const [currency, setCurrency] = useState("");
+  const [amount, setAmount] = useState(40);
+  const [currency, setCurrency] = useState("USD");
   const [clientSecret, setClientSecret] = useState(null);
   const [error, setError] = useState(null);
   const [metadata, setMetadata] = useState(null);
@@ -20,19 +23,24 @@ export default function CheckoutForm() {
   const elements = useElements();
 
   const userLocale = getUserLocale();
+  let orderid = Cookies.get('orderid')
 
   useEffect(() => {
     // Step 1: Fetch product details such as amount and currency from
     // API to make sure it can't be tampered with in the client.
-    api.getProductDetails().then(productDetails => {
-      setAmount(productDetails.amount / 100);
-      setCurrency(productDetails.currency);
-    });
+    api
+      .getProductDetails({orderid})
+      .then(productDetails => {
+          console.log("product details ya sesh", productDetails);
+      })
 
-    // Step 2: Create PaymentIntent over Stripe API
+
+    // // Step 2: Create PaymentIntent over Stripe API
     api
       .createPaymentIntent({
-        payment_method_types: ["card"]
+        payment_method_types: ["card"],
+        amount: amount,
+        currency: currency
       })
       .then(clientSecret => {
         setClientSecret(clientSecret);
